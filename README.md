@@ -14,7 +14,17 @@ Claude Code 日志管理工具 —— GLM 智能摘要，纯 Markdown 归档。
 ## 安装
 
 ```bash
-# 下载 tk.py
+# 克隆仓库
+git clone <repository-url>
+cd termkeeper
+
+# 复制配置文件模板
+cp config.json.example config.json
+
+# 编辑配置文件，填入你的 API Key
+nano config.json  # 或使用你喜欢的编辑器
+
+# 赋予执行权限
 chmod +x tk.py
 
 # 可选：创建符号链接到 PATH
@@ -23,24 +33,46 @@ sudo ln -s $(pwd)/tk.py /usr/local/bin/tk
 
 ## 配置
 
-编辑 `tk.py` 顶部的配置常量：
+编辑 `config.json` 文件：
 
-```python
-# GLM API 配置（智谱 AI）
-GLM_API_KEY = "your-api-key-here"
-GLM_BASE_URL = "https://open.bigmodel.cn/api/coding/paas/v4"
-GLM_MODEL = "glm-4-flash"
-
-# Ollama 配置（备选）
-OLLAMA_BASE_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen3.5:2b"
+```json
+{
+  "glm": {
+    "api_key": "your-api-key-here",
+    "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
+    "model": "glm-4-flash",
+    "timeout": 30
+  },
+  "ollama": {
+    "base_url": "http://localhost:11434",
+    "model": "qwen3.5:2b",
+    "timeout": 30
+  },
+  "display": {
+    "list_threshold_hours": 24,
+    "max_summary_length": 30
+  }
+}
 ```
+
+**配置说明：**
+
+| 配置项 | 说明 |
+|--------|------|
+| `glm.api_key` | 智谱 AI 的 API 密钥（必填） |
+| `glm.base_url` | GLM API 端点地址 |
+| `glm.model` | 使用的 GLM 模型 |
+| `ollama.base_url` | 本地 Ollama 服务地址（备选） |
+| `ollama.model` | Ollama 使用的模型 |
+| `display.list_threshold_hours` | 列表显示的时间阈值（小时） |
 
 **获取 GLM API Key：**
 1. 访问 [智谱开放平台](https://open.bigmodel.cn/)
 2. 注册/登录账号
 3. 在个人中心 → API Keys 创建新密钥
 4. 使用 **Coding 套餐** 端点获得更优惠的价格
+
+**注意：** `config.json` 包含敏感信息，已加入 `.gitignore`，不会被提交到 Git 仓库。
 
 ## 使用方法
 
@@ -232,6 +264,40 @@ tk r 5 -l       # 自动启动 Claude 并恢复第 5 个会话（无需复制粘
 - **Python 3.8+**: 仅使用标准库
 - **依赖**: `pathlib`, `json`, `re`, `urllib.request`, `signal`
 - **无第三方依赖**: 极简、可移植
+
+## 项目结构
+
+```
+termkeeper/
+├── tk.py                    # 主程序
+├── config.json.example      # 配置文件模板
+├── config.json              # 实际配置文件（不提交到 Git）
+├── README.md                # 项目文档
+└── .gitignore               # Git 忽略文件规则
+```
+
+**数据存储位置：**
+- 会话归档: `~/.termkeeper/sessions/*.md`
+- Claude 源文件: `~/.claude/projects/*/session.jsonl`
+
+## 开发
+
+```bash
+# 克隆仓库
+git clone <repository-url>
+cd termkeeper
+
+# 创建配置文件
+cp config.json.example config.json
+# 编辑 config.json 填入你的 API Key
+
+# 运行测试
+python3 tk.py list
+
+# 提交变更
+git add .
+git commit -m "描述你的变更"
+```
 
 ## GLM API 参考
 
