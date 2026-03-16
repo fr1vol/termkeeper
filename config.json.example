@@ -1,0 +1,17 @@
+{
+  "glm": {
+    "api_key": "your-api-key-here",
+    "base_url": "https://open.bigmodel.cn/api/coding/paas/v4",
+    "model": "glm-4-flash",
+    "timeout": 30
+  },
+  "ollama": {
+    "base_url": "http://localhost:11434",
+    "model": "qwen3.5:2b",
+    "timeout": 30
+  },
+  "display": {
+    "list_threshold_hours": 24,
+    "max_summary_length": 30
+  }
+}
