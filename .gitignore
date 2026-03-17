@@ -36,3 +36,5 @@ Thumbs.db
 
 # 会话数据（本地生成，不需要版本控制）
 sessions/
+claude_archives/
+restore_prompt.txt
