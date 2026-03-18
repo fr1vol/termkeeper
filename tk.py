@@ -745,6 +745,12 @@ def main():
         description="TermKeeper V1.0 - Claude Code 项目管理工具"
     )
 
+    # 短选项别名
+    parser.add_argument('-m', '--migrate', nargs='*', metavar='OLD_PATH',
+                        help='记忆搬家（等同于 migrate 命令）')
+    parser.add_argument('-a', '--archive', action='store_true',
+                        help='归档清洗（等同于 archive 命令）')
+
     subparsers = parser.add_subparsers(dest='command', help='可用命令')
 
     # migrate 命令
@@ -756,11 +762,19 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.command:
-        parser.print_help()
-        return 0
-
     try:
+        # 处理短选项别名
+        if args.migrate is not None:
+            old_path = args.migrate[0] if args.migrate else None
+            return cmd_migrate(type('Args', (), {'old_path': old_path})())
+        if args.archive:
+            return cmd_archive(None)
+
+        # 处理子命令
+        if not args.command:
+            parser.print_help()
+            return 0
+
         if args.command == 'migrate':
             return cmd_migrate(args)
         elif args.command == 'archive':

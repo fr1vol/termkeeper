@@ -36,6 +36,15 @@ sudo ln -s $(pwd)/tk.py /usr/local/bin/tk
 
 ## 使用方法
 
+### 快捷命令
+
+| 命令 | 等同于 | 说明 |
+|------|--------|------|
+| `tk .` | - | 自动迁移 |
+| `tk -m` | `tk migrate` | 交互式迁移 |
+| `tk -m <old_path>` | `tk migrate <old_path>` | 显式迁移 |
+| `tk -a` | `tk archive` | 归档会话 |
+
 ### `tk .` - 自动迁移
 
 移动项目后，在新目录中直接运行：
