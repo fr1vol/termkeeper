@@ -766,7 +766,12 @@ def main():
         # 处理短选项别名
         if args.migrate is not None:
             old_path = args.migrate[0] if args.migrate else None
-            return cmd_migrate(type('Args', (), {'old_path': old_path})())
+            if old_path is None:
+                # tk -m 不带参数，执行自动迁移
+                return cmd_auto_migrate(None)
+            else:
+                # tk -m <path> 显式指定路径
+                return migrate_explicit(old_path)
         if args.archive:
             return cmd_archive(None)
 
